@@ -3,9 +3,19 @@
   "version": "0.0.1",
   "description": "Experimental chat application that utilizes IPFS and Solidity.",
   "main": "App.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sean al-Baroudi",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "web3.storage": "^4.2.0"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "http-server": "^14.1.0",
+    "ipfs-core": "^0.14.3"
+  }
 }

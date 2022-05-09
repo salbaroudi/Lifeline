@@ -1,0 +1,13 @@
+4 catagores of 32 words each. 
+
+Choose 4 words from 4 catagories => 16 words total to form a key.
+
+animals = [squirrel, mole, catfish, mackerel, oxen, pig, sparrow, crow, bee, ant, frog, snake, duck, otter, mouse, moose, pidgeon, badger, racoon, cod, crab, budgie, mussel, moth, seal, seagull, goat, cow, termite, wallabie, krill, rabbit]
+
+greek+math symbols = [gamma, delta, epsilon, zeta, eta, theta, iota, kappa, lambda, mu, nu, xi, omnicron, rho, tau, upsilon, phi, chi, psi, omega, forall, exists, eqiuvalence, ocross, odot, approx, elementof, perp, null, subsection, divide, approx]
+
+objects = [stapler, paperweight, fork, screwdriver, ruler, cup, plate, candle, thimble, iron, battery, mirror, pot, bottle, step, book, pen, key, folder, wedge, capsule, top, tape, bag, glove, hat, picture, hook, vice, filter, notepad, bookmark, vase]
+
+structures and areas = [office, parking lot, hospital, field, hills, depot, terminal, alley, wall, market, passage, elevator, gazebo, warehouse, closet, pool, highway, roundabout, crossing, bridge, gate, door, arch, patio, stairs, alcove, garage, mall, overpass, dam, booth, path]
+
+
