@@ -11,6 +11,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "rimraf": "^3.0.2",
+    "timeit-js": "^0.0.10",
     "web3.storage": "^4.2.0"
   },
   "dependencies": {
