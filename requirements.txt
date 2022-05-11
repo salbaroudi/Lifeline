@@ -1,0 +1,50 @@
+Version 0.1: For our most basic app, we just need to place an initialization node,
+and send one message. This is because messaging is expensive. If participants want
+to talk, they can just send messaging channel details to establish a connection.
+
+Seed Phrase:
+    - Implement UI so that User may select 4 words from 4 categories.
+      - Two parts to UI:
+         - Word Choice Selection Screen (4 screens that appear) (CSS and JS)
+         - Simple Window to recieve message (just post to the bottom of screen).
+      - code should ideally all run in browser (just one large script)
+
+Once the seed phrase is entered, the application backend starts:
+
+Start up Logic of the Application:
+1) User Zero (U0) selects a key phrase and sets an initialization node on IPFS.
+2) U0  Checks if our initializaiton node exists on cloud with ipfs.dag.get.
+   User generates the node by placing the seed phrase in a JSON object, and hashing it.
+   Use IPFS.get to see if this node actually exists.
+
+   (i) If the node does not exist, place the node. This will act as a beacon for U1.
+   (ii) If the node does exist, U0 must send the message.
+
+3) U0 sends a message for contact: User builds the following DAG node:
+    { message: <seedphrase> + offset + charInt};
+
+    Where charInt is the ASCII / character code for each letter of our alphabet.
+
+    The node is added to the IPLS network for each character of the message.
+
+4) To read the message, U1 now iterates on our constructed node:
+{ message: <seedphrase> + offset + i};
+
+And uses ipfs.dag.get() to see if the node exists. If it does, it means that they have
+found a character for their message. This process repeats until a Termination character
+is found.
+
+Testing Questions:
+- Can our local node reliably connect to ipfs/ipls? What settings should we choose.
+- If we need a pinning service, who is paying for the pinning?
+- Can we just store the texts locally for both nodes (encrypted), and just temporarily
+post characters to the main network?
+- can we delete the message nodes, after we are done?
+- what happens if both users try to message at once? Agreed upon offset scheme in the event
+of a collision needs to be made.
+
+
+Implementation Nodes for the above:
+- need a reduced alphabet mapping to iterate on (26 chars, 10 numbers, 7 symbols, 1 term char)
+- a browser or local node must be run by the user of the code.
+- (!!) Need to access the cID v1 hash function somehow...? => feed into get() for testing.
