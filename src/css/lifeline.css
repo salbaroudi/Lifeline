@@ -1,7 +1,9 @@
+body {background-color:#000;}
+
 .grid-container {
   display: grid;
   grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
-  background-color: #FFFFFF;
+  background-color: #222;
   padding: 4px;
 }
 .grid-item {
@@ -38,6 +40,39 @@
 .grid-item.blue {
   background-color: rgba(153, 204, 255, 0.8);
 }
-.grid-item-clicked.green {
+.grid-item-clicked.blue {
   background-color: rgba(0, 128, 255, 0.99);
+}
+
+.button {
+  background-color: rgba(200,0,0,0.99);
+  border: 2px 2px 2px 2px;
+  border-style: groove;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.blinking{
+	animation:blinkingText 2s infinite;
+  font-size:20pt;
+}
+@keyframes blinkingText{
+	0%{background-color: #F00;	color: #000;}
+	50%{background-color: #000;	color: #F00;}
+	100%{background-color: #F00;	color: #000;}
+}
+
+.console{
+  background-color:#000;
+  color:#F00;
+  font-size: 16pt;
+  height:20%;
+}
+
+.console.hidden {
+  visibility:hidden;
 }
