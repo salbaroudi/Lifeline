@@ -1,9 +1,9 @@
 {
   "name": "lifeline",
-  "version": "0.0.1",
-  "description": "Experimental chat application that utilizes IPFS and Solidity.",
+  "version": "0.1",
+  "description": "Experimental chat application that utilizes IPFS DAG functionality",
   "main": "App.js",
-  "type": "module",
+  "//":"type: module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,6 +15,7 @@
     "web3.storage": "^4.2.0"
   },
   "dependencies": {
+    "browserify": "^17.0.0",
     "crypto": "^1.0.1",
     "http-server": "^14.1.0",
     "ipfs-core": "^0.14.3"
