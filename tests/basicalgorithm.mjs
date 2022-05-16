@@ -9,14 +9,15 @@ import * as crypto from 'node:crypto';
 
 const ipfs = await IPFS.create();
 
+const cMap = new Map();
+const frameLength = 45;
+
+
 const sha256 = hasher.from({
   name: 'sha2-256',
   code: 0x12,
   encode: (input) => new Uint8Array(crypto.createHash('sha256').update(input).digest())
 })
-
-const cMap = new Map();
-const frameLength = 45;
 
 //charMap - letters.
 for (let i = 0; i < 26; i++) {
@@ -67,7 +68,7 @@ try {
 
 //Now lets place our message nodes on the network.
 let hasReqMsg = true;
-const msg="signal received.need help?|";
+const msg="eee|";
 //If we see a node, we need to send a message.
 let offset = 0;
 if (hasReqMsg==true) {
@@ -77,11 +78,13 @@ if (hasReqMsg==true) {
   for (let char of msg) {
     let offsetStr = (offset + cMap.get(char) + "");
     let bufMsg = new TextEncoder().encode(seedPhrase + "||" + offsetStr);
+    holdCID = await ipfs.block.put(bufMsg);
+    console.log("Placed CID= " + )
 
-    hashMsg = await sha256.digest(bufMsg);
+//    hashMsg = await sha256.digest(bufMsg);
   //  console.log("For Character = " + char + "and offset =" + offset + "offsetSTR=" + offsetStr);
-  //  console.log(CID.create(1, 0x71, hashMsg));
-  //  console.log("----------");
+//    console.log(CID.create(1, 0x71, hashMsg));
+    console.log("----------");
     offset+=45;
   }
 }
@@ -91,21 +94,23 @@ offset = 0;
 let bufGuess; let hashGuess; let guessCID; let fetchGuess;
 let terminated = false;
 while (!terminated) {
-  for (let num of cArr) {
-    let offsetStr = (offset + num + "");
-     bufGuess = new TextEncoder().encode(seedPhrase + "||" + offsetStr);
-     hashGuess = await sha256.digest(bufGuess);
-     guessCID = CID.create(1, 0x71, hashGuess);
+  for (let num of msg) { //cArr
+    let offsetStr = (offset + cMap.get(num) + "");
+    console.log("offsetSTR= " + offsetStr);
+    bufGuess = new TextEncoder().encode(seedPhrase + "||" + offsetStr);
+    hashGuess = await sha256.digest(bufGuess);
+    guessCID = CID.create(1, 0x71, hashGuess);
+    console.log("guessCID= " + guessCID);
 
      try {
-       fetchGuess = await ipfs.block.get(guessCID,{timeout:100});
+       fetchGuess = await ipfs.block.get(guessCID,{timeout:1000});
        //We found something.
-       if (num == 43) {
+       if (num == "|") { // (!!)
          terminated = true;
          break;
        }
        console.log("FOUND: " + cMap.get(num));
-     } catch (e) {  } //Don't care about timeout errors.
+     } catch (e) { console.log(e);  } //Don't care about timeout errors.
   }
   offset+=45;
 }
