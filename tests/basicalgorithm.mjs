@@ -79,7 +79,7 @@ if (hasReqMsg==true) {
     let offsetStr = (offset + cMap.get(char) + "");
     let bufMsg = new TextEncoder().encode(seedPhrase + "||" + offsetStr);
     holdCID = await ipfs.block.put(bufMsg);
-    console.log("Placed CID= " + )
+    console.log("Placed CID= " + holdCID);
 
 //    hashMsg = await sha256.digest(bufMsg);
   //  console.log("For Character = " + char + "and offset =" + offset + "offsetSTR=" + offsetStr);
@@ -90,7 +90,7 @@ if (hasReqMsg==true) {
 }
 
 //Now lets decode the given message.
-offset = 0;
+/*offset = 0;
 let bufGuess; let hashGuess; let guessCID; let fetchGuess;
 let terminated = false;
 while (!terminated) {
@@ -114,3 +114,4 @@ while (!terminated) {
   }
   offset+=45;
 }
+*/

@@ -1,6 +1,4 @@
 //support.js
-import { CID } from 'multiformats/cid';
-import * as hasher from 'multiformats/hashes/hasher';
 import * as crypto from 'node:crypto';
 
 let gencharmap = function() {
@@ -29,6 +27,7 @@ let gencharmap = function() {
   return cMap;
 }
 
+/*
 const sha256 = hasher.from({
   name: 'sha2-256',
   code: 0x12,
@@ -39,12 +38,20 @@ let phrase2buf = function(phrase) {
   return new TextEncoder().encode(phrase);
 }
 
+/*
 let gencid = function(phrase) {
-  const buf = phrase2buf(phrase);
+  //const buf = phrase2buf(phrase);
   const hash = sha256.digest(buf);
   return  CID.create(1, 0x71, hash); //version, codec, hash...
 }
 
+
+let gencid = function(buf) {
+  //const buf = phrase2buf(phrase);
+  const hash = sha256.digest(buf);
+  return CID.create(1, 0x71, hash); //version, codec, hash...
+}
+*/
 let guessblock = async function(cid,to) {
   let guessCID; let result = false;
   try {
@@ -56,4 +63,4 @@ let guessblock = async function(cid,to) {
   return result;
 }
 
-export { gencharmap, gencid, phrase2buf, guessblock };
+export { gencharmap, guessblock };

@@ -41,7 +41,7 @@ const buf2 = new TextEncoder().encode("hellohellohello");
 const hash2 = await sha256.digest(buf2);
 //console.log("json.encode:" + json.encode(obj))
 const cid2 = CID.create(1, 0x71, hash2) //version, codec, hash...
-const fetchBS = await ipfs.block.get(cid2,{timeout:});
+const fetchBS = await ipfs.block.get(cid2,{timeout:1000});
 console.log("Getting our generated (non-put) CID: " + fetchBS);
 
 //We have to process a timeout error to reasonably "know" that there is no existing CID.
