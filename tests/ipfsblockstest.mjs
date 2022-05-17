@@ -31,18 +31,18 @@ const cid = CID.create(1, 0x71, hash) //version, codec, hash...
 console.log("Our generated CID is: " + cid.toString());
 
 //We can! so lets try to get() the CID we generated. What do we end up with?
-const fetch = await ipfs.block.get(cid)
+const fetch = await ipfs.block.get("bafyreidzq4oo6xhuw3ldb7dnxv4d3dvgb2pmdk4ecuko3gqcqxdqq57pci"); //cid
 console.log("Getting our valid CID: " + fetch);
 
 //versus, a bullshit CID.
 //We cant just change random letters in a known CID (invalid error)
 //..let's generate a new one without adding.
-const buf2 = new TextEncoder().encode("hellohellohello");
+/*const buf2 = new TextEncoder().encode("hellohellohello");
 const hash2 = await sha256.digest(buf2);
 //console.log("json.encode:" + json.encode(obj))
 const cid2 = CID.create(1, 0x71, hash2) //version, codec, hash...
 const fetchBS = await ipfs.block.get(cid2,{timeout:1000});
 console.log("Getting our generated (non-put) CID: " + fetchBS);
-
+*/
 //We have to process a timeout error to reasonably "know" that there is no existing CID.
 //This is quite difficult.
