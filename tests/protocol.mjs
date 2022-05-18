@@ -4,6 +4,7 @@ import { gencharmap, guessblock, sha256, gencid, tEnc } from "./support.mjs";
 const ipfs = await IPFS.create();
 const cMap = gencharmap();
 const timeoutms = 1000;
+const decoder = new TextDecoder();
 //let offsetIndex = 0; let offsetStr;
 
 //*Functions
@@ -13,10 +14,10 @@ let encodemessage = async function(sP,msg,printout=0) {
   for (let char of msg) {
     for (let bit of cMap.get(char)) {
       offsetStr = ("||" + offsetIndex + "||" + bit);
-      let hold = await ipfs.block.put(tEnc.encode(sP+offsetStr),{format:"dag-cbor",mhtype:"sha2-256", version:1});
+      let hold = await ipfs.block.put(tEnc.encode(sP+offsetStr));
       let hold2 = gencid(sP+offsetStr);
       cidArr.push(hold);
-      //cidArr.push(hold2);
+      cidArr.push(hold2);
       offsetIndex+=1;
     }
   }
@@ -28,9 +29,10 @@ let encodemessage = async function(sP,msg,printout=0) {
 }
 
 //Our Test Phrase:
-const seedPhrase = "oxencatfishmouseseagullpenironpotbookpooldammallgazeboaloofformalcandidcaustic";
+const seedPhrase = "cowcatfishmouseseagullpenironpotbookpooldammallgazeboaloofformalcandidcaustic";
 
 //Need to check if seed node exists. A thrown timeout error means we likely have no node.
+
 let cidSP = gencid(seedPhrase);
 let initiate = false; let fetchState; let cidArr;
 
@@ -49,16 +51,6 @@ else { // (!!!) We have our encoding algorithm to place nodes. Need to provide i
 }
 
 console.log("Decode Results:" + "----------------");
-ipfs.repo.gc();
-
-for await (const ref of ipfs.refs.local()) {
-  if (ref.err) {
-    console.error(ref.err)
-  } else {
-    console.log(ref.ref)
-  }
-}
-
 
 //Decode Algorithm. Place in another file later (!!!)
 //we need to generate probable offsets.
@@ -67,30 +59,35 @@ for await (const ref of ipfs.refs.local()) {
 //let holder = await ipfs.block.get(CID.parse("bafyreib655a5bhhh5sobxobvkavhg3s6w5jfefog7oguj4d2fhvxfmspyu"),{timeout:timeoutms});
 //console.log("Fetching one block for a test: " + holder);
 
-/*
+
 cidArr = [];
 let termcharfound = false;
 let offsetIndex = 0; let offsetStr;
 let bitArr = ["0","1"];
 let codeStr; let foundMsg = ""; let guessCID;
+let fetch;
 
-while (!termcharfound) {
+//while (!termcharfound) {
   for (let i = 0; i < 6; i++) { //just reuse offsetStr and offsetIndex
     for (let bit in bitArr) {
       offsetStr = ("||" + offsetIndex + "||" + bit);
       guessCID = gencid(seedPhrase+offsetStr);
-      //console.log("offsetSTR= " + offsetStr);
-      cidArr.push(guessCID);
-      if (guessblock(guessCID)) { codeStr+=bit;}
+      try {
+        fetch = await ipfs.block.get(guessCID,{timeout:500});
+        cidArr.push(guessCID);
+        console.log(decoder.decode(fetch));
+
+      }
+      catch (e) {
+        console.log("CID not found");
+      }
+
     }
     offsetIndex+=1;
   }
-  termcharfound = true;
-  foundMsg+=cMap.get(codeStr);
-  console.log("FM :: " + foundMsg);
+  //termcharfound = true;
+  //foundMsg+=cMap.get(codeStr);
+  //console.log("FM :: " + foundMsg);
   //if (cMap.get(codeStr) == "101011") { termcharfound = true;}
   codeStr = "";
-}
-console.log(cidArr);
-//console.log("Our found message is:: " + foundMsg);
-*/
+//}

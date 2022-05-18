@@ -41,17 +41,16 @@ const sha256 = hasher.from({
 let gencid = function(words) {
   let buf = new TextEncoder().encode(words);
   const hash = sha256.digest(buf);
-  return CID.create(1, 0x71, hash); //version, codec, hash...
+  return CID.create(0, 0x70, hash); //version, codec, hash...
 }
 
 let guessblock = async function(cid,to) {
   let guessCID; let result = false;
   try {
-    guessCID = await ipfs.block.get(cid,{timeout:to});
-    console.log("MATCH");
-    //We found something.
+    const decoder = new TextDecoder()
+    guessCID = await ipfs.block.get(cid,{timeout:1000});
+    console.log(decoder.decode(guessCID));
     result = true;
-
   } catch (e) { console.log("No block found");  } //Don't care about timeout errors. Just return false.
   return result;
 }

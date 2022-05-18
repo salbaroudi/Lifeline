@@ -8,6 +8,7 @@ const ipfs = await IPFS.create();
 //why do we need dag-cbor??? Why not just default block encoding? Who cares?
 
 //Test Seed phrase and block.put() a node up.
+
 let seedPhrase = "canarymoleseagullwallabieetcetc...";
 let pCounter = 0;
 
@@ -48,9 +49,11 @@ console.log(cidArr);
 
 //Get
 for (let i = 0; i < 5; i++) {
-  let str = (seedPhrase + (i).toString(2));
+  let str = (seedPhrase + (i).toString(3));
   hash = await sha256.digest(tEnc.encode(str));
   cid = CID.create(0, 0x70, hash) //version, codec, hash...
-  fetch = await ipfs.block.get(cid); //cid
+  try{
+  fetch = await ipfs.block.get(cid,{timeout:2000}); //cid
   console.log(decoder.decode(fetch));
+} catch (e) {console.log(str + " is not found!")}
 }
