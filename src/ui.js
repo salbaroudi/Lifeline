@@ -48,9 +48,25 @@ function resetwords(event) {
   $( "#selectedwords" ).html("");
 }
 
+function sendmessage(event) {
+  if (selectedWords.length != 4) {
+    let content = $( "#consolebox" ).html();
+    $( "#consolebox" ).html(content + "<br /> <div id='warning' class='warningtext'> Warning:: 16 words not selected. Check your selections. </div>");
+  }
+  let seedPhrase = selectedWords.reduce((concat, word) => {return concat+=word;},"");
+  var post = $.post( "http://localhost:8081", { seedPhrase: seedPhrase, mode: "query" })
+  .done((data) => {console.log("Data Loaded:" + data)});
+
+}
+
+
 $(".grid-item").on( "click", wordpicked);
 $("#reset-button").on( "click", resetwords);
+$("#sendmessage").on("click", sendmessage);
 $("#confirm-words").on( "click", resetwords);
+
+
+
 
 
 // https://www.digitalocean.com/community/tutorials/how-to-modify-attributes-classes-and-styles-in-the-dom
