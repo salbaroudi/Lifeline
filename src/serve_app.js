@@ -7,16 +7,43 @@
 
 
 const http = require("http");
+const fs = require("fs");
 const host = 'localhost';
 const port = 8081;
+const path = "./data/userdata.json";
+
+function genUserFile(path,seedPhrase) {
+  let tempStr = `{"username":"User", "sentlastmsg":"false", "currOffset": 0, "seedPhrase":"`
+  tempStr+=seedPhrase+`","conv":[]}`
+  let jsonObj = JSON.parse(tempStr); //Needed??
+
+  fs.writeFile(path, tempStr, err => { if (err) { console.log(err)}});
+  return jsonObj;
+}
+
+
+function parsePost(chunk) {
+  const parsedStr = chunk.toString()
+  let storeParams = [parsedStr.split("&")[0].split("=")[1],parsedStr.split("&")[1].split("=")[1]];
+
+  //It looks like we have to do all the parse work and logic here - cant get arguments into global scope.
+  //Assume the seedPhrase is correct (error checked by UI).
+
+  //Check to see if user file exists. If not, generate it.
+  if (!fs.existsSync(path)) {
+    genUserFile(path,storeParams[0]); //put in place and autogenerate
+    //Need to check if node exists. //and if a message was left for us.
+  }
+
+}
+
 
 
 const reqListener = function (req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  const argArr = [];
   if (req.method == "POST") {
-    req.on('data', chunk => {
-        console.log(`Data chunk available: ${chunk}`);
-      });
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    req.on('data', parsePost);
     res.end(`Your request has been recieved. Thank You.`);
   }
   else {
@@ -31,25 +58,6 @@ const reqListener = function (req, res) {
   res.writeHead(200);
   res.end(`<div id="warning" class="warningtext"> This is a warning message from the application (!!) </div>`);
 }; */
-
-
-
-
-//json listener
-/*
-const reqListener = function (req, res) { //handles requests?
-  res.setHeader("Content-Type", "application/json");
-  res.writeHead(200);
-  res.end(`{"message" :"this is a JSON response"}`);
-}
-*/
-
-
-//basic listener
-/*const reqListener = function (req, res) { //handles requests?
-  res.writeHead(200);
-  res.end("My first server!");
-}*/
 
 
 const server = http.createServer(reqListener);
